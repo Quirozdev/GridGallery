@@ -6,11 +6,62 @@
 
 html {
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  scroll-behavior: smooth;
 }
 
 img {
   display: block;
   max-width: 100%;
+}
+
+.overlap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  background-color: black;
+  opacity: 0.5;
+  visibility: hidden;
+  z-index: 5;
+}
+
+.exit {
+  position: fixed;
+  width: 100%;
+  min-height: 100%;
+  visibility: hidden;
+  z-index: 8;
+}
+
+header,
+main,
+footer {
+  padding: 1.5rem;
+}
+
+.contenedor-titulo-icono {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  width: 100px;
+}
+
+.titulo {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.descripcion {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .galeria {
@@ -21,10 +72,16 @@ img {
   gap: 1rem;
 }
 
-.galeria > figure {
+.galeria > a {
   grid-column: span 1;
   grid-column: span 1;
   position: relative;
+  border-radius: 0.75rem;
+  overflow-anchor: none;
+}
+
+figure {
+  height: 100%;
 }
 
 @media screen and (min-width: 500px) {
@@ -32,7 +89,7 @@ img {
     grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
 
-  .galeria > figure {
+  .galeria > a {
     grid-column: span 1;
   }
 }
@@ -42,16 +99,16 @@ img {
     grid-template-columns: repeat(3, minmax(200px, 1fr));
   }
 
-  .galeria > figure:nth-child(3n) {
+  .galeria > a:nth-child(3n) {
     grid-column: span 1;
   }
 
-  .galeria > figure:nth-child(3n + 2) {
+  .galeria > a:nth-child(3n + 2) {
     grid-column: span 2;
     grid-row: span 1;
   }
 
-  .galeria > figure:nth-child(3n + 5) {
+  .galeria > a:nth-child(3n + 5) {
     grid-column: span 3;
     grid-row: span 2;
   }
@@ -65,14 +122,49 @@ img {
 
 @media screen and (min-width: 1240px) {
   .galeria {
-    grid-template-columns: repeat(6, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 }
 
-.galeria > figure > img {
+.gallery-img {
+  border-radius: 0.75rem;
+  filter: grayscale(100%);
+  transition: filter 0.75s ease-in-out;
   width: 100%;
   height: 100%;
   object-fit: fill;
+}
+
+a:has(figure:target) {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  min-width: 180px;
+  max-width: 400px;
+  z-index: 6;
+}
+
+.galeria a {
+  transition: transform 1s ease-in-out;
+}
+
+body:has(figure:target) .overlap,
+body:has(figure:target) .overlap > .exit {
+  visibility: visible;
+}
+
+figure:target .gallery-img,
+figure:target figcaption {
+  filter: grayscale(0);
+}
+
+figure:target .gallery-img {
+  opacity: 1;
+}
+
+figure:target figcaption {
+  opacity: 0.65;
 }
 
 figcaption {
@@ -83,22 +175,51 @@ figcaption {
   position: absolute;
   bottom: 0;
   width: 100%;
-  opacity: 0.65;
-  z-index: 3;
-}
-
-figure,
-figure > * {
-  transition: transform 1s;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  border-radius: 0 0 0.75rem 0.75rem;
 }
 
 figure:hover *,
 figure:hover {
-  transform: scale(1.05);
-  position: relative;
-  z-index: 4;
+  filter: grayscale(0);
 }
 
 figure:hover figcaption {
-  position: absolute;
+  opacity: 0.65;
+}
+
+footer {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.1rem;
+}
+
+.icon {
+  width: 40px;
+  transition: all 0.5 ease-in-out;
+  cursor: pointer;
+}
+
+#facebook-icon:hover path {
+  fill: #1877f2;
+}
+
+#twitter-icon:hover path {
+  fill: #1da1f2;
+}
+
+#reddit-icon:hover path {
+  fill: #ff5700;
+}
+
+.contacto {
+  font-weight: bold;
+}
+
+.redes-sociales a {
+  text-decoration: none;
 }
